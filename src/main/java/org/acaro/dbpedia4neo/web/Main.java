@@ -4,15 +4,16 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
-import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
-import com.tinkerpop.blueprints.pgm.oupls.sail.GraphSail;
+//import com.tinkerpop.blueprints.impls.neo4j.Neo4jGraph;
+import com.tinkerpop.blueprints.impls.neo4j2.Neo4j2Graph;
+import com.tinkerpop.blueprints.impls.sail.SailGraph;
+import com.tinkerpop.blueprints.oupls.sail.GraphSail;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
 
 		final Server server = new Server(8081);
-		final Neo4jGraph neo  = new Neo4jGraph("dbpedia4neo");
+		final Neo4j2Graph neo  = new Neo4j2Graph("dbpedia4neo");
 		final GraphSail gsail = new GraphSail(neo);
 		final SailGraph sail  = new SailGraph(gsail);
 		

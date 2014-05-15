@@ -15,32 +15,34 @@ import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
-import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
-import com.tinkerpop.blueprints.pgm.oupls.sail.GraphSail;
-import com.tinkerpop.blueprints.pgm.util.TransactionalGraphHelper;
-import com.tinkerpop.blueprints.pgm.util.TransactionalGraphHelper.CommitManager;
+import com.tinkerpop.blueprints.impls.neo4j2.Neo4j2Graph;
+//import com.tinkerpop.blueprints.impls.neo4j.Neo4jGraph;
+import com.tinkerpop.blueprints.oupls.sail.GraphSail;
+// import com.tinkerpop.blueprints.util.TransactionalGraphHelper;
+// import com.tinkerpop.blueprints.util.TransactionalGraphHelper.CommitManager;
 
 public class DBpediaLoader 
 {
     public static void main( String[] args ) 
     	throws SailException, RDFParseException, RDFHandlerException, FileNotFoundException, IOException
     {
-    	Neo4jGraph neo = new Neo4jGraph("dbpedia4neo");
+    	Neo4j2Graph neo = new Neo4j2Graph("dbpedia4neo");
     	Sail sail = new GraphSail(neo);
-    	CommitManager manager = TransactionalGraphHelper.createCommitManager(neo, 10000);
+    	// CommitManager manager = TransactionalGraphHelper.createCommitManager(neo, 10000);
 
     	for (String file: args) {
     		System.out.println("Loading " + file + ": ");
-    		loadFile(file, sail.getConnection(), sail.getValueFactory(), manager);
+    		loadFile(file, sail.getConnection(), sail.getValueFactory());//, manager);
     		System.out.print('\n');
     	}
-    	manager.close();
+    	// manager.close();
     	sail.shutDown();
     }
 
-	private static void loadFile(final String file, SailConnection sc, ValueFactory vf, CommitManager manager) throws RDFParseException, RDFHandlerException, FileNotFoundException, IOException {
+	private static void loadFile(final String file, SailConnection sc, ValueFactory vf)  /* , CommitManager manager)  */
+        throws RDFParseException, RDFHandlerException, FileNotFoundException, IOException {
 		NTriplesParser parser = new NTriplesParser(vf);
-		TripleHandler handler = new TripleHandler(sc, manager);
+		TripleHandler handler = new TripleHandler(sc);//, manager);
 		parser.setRDFHandler(handler);
 		parser.setStopAtFirstError(false);
 		parser.setParseErrorListener(new ParseErrorListener() {
